@@ -151,8 +151,11 @@ public class ProcessJUnitTest {
     assertThat(processInstance).isWaitingAt("Activity_Charge_Credit_Card");
     execute(job());
     // Make assertions on the process instance
-    assertThat(processInstance).isEnded().hasPassed("Activity_Charge_Credit_Card")
+    assertThat(processInstance)
+        .isEnded()
+        .hasPassed("Activity_Charge_Credit_Card")
         .hasNotPassed("Event_Payment_Complete")
-        .hasPassed("Event_0jzgwfr");
+        .hasPassed("Event_0jzgwfr")
+        .hasPassed("Activity_0jvznlu");
   }
 }

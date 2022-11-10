@@ -44,8 +44,13 @@
     <bpmn:sequenceFlow id="Flow_0dvp9jr" sourceRef="Event_1dr4b8a" targetRef="Event_0jzgwfr" />
     <bpmn:endEvent id="Event_0jzgwfr" name="payment&#10;failed">
       <bpmn:incoming>Flow_0dvp9jr</bpmn:incoming>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1rl4bke" camunda:delegateExpression="${paymentCompletion}" />
+      <bpmn:compensateEventDefinition id="CompensateEventDefinition_15yu6pw" />
     </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_1iyhdbp" attachedToRef="Activity_Deduct_Amount">
+      <bpmn:compensateEventDefinition id="CompensateEventDefinition_0plbgy3" />
+    </bpmn:boundaryEvent>
+    <bpmn:task id="Activity_0jvznlu" name="refund credit amount" isForCompensation="true" />
+    <bpmn:association id="Association_03j3tab" associationDirection="One" sourceRef="Event_1iyhdbp" targetRef="Activity_0jvznlu" />
   </bpmn:process>
   <bpmn:message id="Message_12i0hrk" name="paymentRequestMessage" />
   <bpmn:error id="Error_10vzdsj" name="chargingError" errorCode="chargingError" camunda:errorMessage="errorMessage" />
@@ -79,17 +84,29 @@
           <dc:Bounds x="768" y="225" width="45" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1cr3uln_di" bpmnElement="Event_0jzgwfr">
+      <bpmndi:BPMNShape id="Event_0u0jsun_di" bpmnElement="Event_0jzgwfr">
         <dc:Bounds x="772" y="312" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="768" y="355" width="44" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jvznlu_di" bpmnElement="Activity_0jvznlu">
+        <dc:Bounds x="330" y="270" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_03j3tab_di" bpmnElement="Association_03j3tab">
+        <di:waypoint x="300" y="258" />
+        <di:waypoint x="300" y="310" />
+        <di:waypoint x="330" y="310" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1v9sfh8_di" bpmnElement="Event_1dr4b8a">
         <dc:Bounds x="542" y="222" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="523" y="265" width="75" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0vssx2y_di" bpmnElement="Event_1iyhdbp">
+        <dc:Bounds x="282" y="222" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1y2wrk9_di" bpmnElement="Flow_1y2wrk9">
         <di:waypoint x="198" y="200" />
