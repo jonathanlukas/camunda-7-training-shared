@@ -22,7 +22,7 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Deployment(resources = "payment_process.bpmn")
+@Deployment(resources = {"payment_process.bpmn"})
 @ExtendWith(ProcessEngineCoverageExtension.class)
 public class ProcessJUnitTest {
   @BeforeEach
@@ -71,7 +71,7 @@ public class ProcessJUnitTest {
   }
 
   @Test
-  @Deployment(resources = "order_process.bpmn")
+  @Deployment(resources = {"order_process.bpmn", "discount.dmn"})
   public void testOrderProcess() {
     // I will not start the other process now
     Mocks.register("paymentRequest", (JavaDelegate) execution -> {});
@@ -108,7 +108,7 @@ public class ProcessJUnitTest {
   }
 
   @Test
-  @Deployment(resources = {"order_process.bpmn","payment_process.bpmn"})
+  @Deployment(resources = {"order_process.bpmn","payment_process.bpmn", "discount.dmn"})
   public void testEndToEnd(){
     ProcessInstance processInstance = runtimeService().startProcessInstanceByKey(
         "OrderProcess",
