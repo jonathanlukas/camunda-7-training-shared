@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1yg4tkl" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.4.2" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
   <bpmn:process id="PaymentProcess" name="Payment Process" isExecutable="true">
-    <bpmn:sequenceFlow id="Flow_1y2wrk9" sourceRef="StartEvent_1" targetRef="Activity_Deduct_Amount" />
+    <bpmn:sequenceFlow id="Flow_1y2wrk9" sourceRef="StartEvent_Payment_Required" targetRef="Activity_Deduct_Amount" />
     <bpmn:exclusiveGateway id="Gateway_0yo81ri" name="open amount left?">
       <bpmn:incoming>Flow_0wc5vtd</bpmn:incoming>
       <bpmn:outgoing>Flow_05azn3k</bpmn:outgoing>
@@ -29,7 +29,7 @@
       <bpmn:incoming>Flow_05azn3k</bpmn:incoming>
       <bpmn:outgoing>Flow_0cebkb1</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="StartEvent_1" name="payment&#10;necessary">
+    <bpmn:startEvent id="StartEvent_Payment_Required" name="payment&#10;necessary" camunda:asyncBefore="true">
       <bpmn:outgoing>Flow_1y2wrk9</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1e136rs" messageRef="Message_12i0hrk" />
     </bpmn:startEvent>
@@ -57,7 +57,7 @@
       <bpmndi:BPMNShape id="Activity_0b6gte5_di" bpmnElement="Activity_Charge_Credit_Card">
         <dc:Bounds x="510" y="160" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1eprrf6_di" bpmnElement="StartEvent_1">
+      <bpmndi:BPMNShape id="Event_1eprrf6_di" bpmnElement="StartEvent_Payment_Required">
         <dc:Bounds x="162" y="182" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="155" y="225" width="51" height="27" />

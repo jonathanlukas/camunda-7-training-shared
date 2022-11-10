@@ -44,6 +44,9 @@ public class ProcessJUnitTest {
     variables.put("CVC", "123");
     // Start process with Java API and variables
     ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("PaymentProcess", "order0", variables);
+    // assert that the process is waiting at start event
+    assertThat(processInstance).isWaitingAt("StartEvent_Payment_Required");
+    execute(job());
     // assert that the process is waiting at charge credit card
     assertThat(processInstance).isWaitingAt("Activity_Charge_Credit_Card");
     execute(job());
@@ -95,9 +98,40 @@ public class ProcessJUnitTest {
     variables.put("expiryDate", "09/24");
     // Start process with Java API and variables
     ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("PaymentProcess", variables);
+    // assert that the process is waiting at start event
+    assertThat(processInstance).isWaitingAt("StartEvent_Payment_Required");
+    execute(job());
     // try to execute credit card payment
     assertThat(processInstance).isWaitingAt("Activity_Charge_Credit_Card");
     RuntimeException exception = assertThrows(RuntimeException.class, () -> execute(job()));
     assertThat(exception).hasMessage("CVC invalid!");
+  }
+
+  @Test
+  @Deployment(resources = {"order_process.bpmn","payment_process.bpmn"})
+  public void testEndToEnd(){
+    ProcessInstance processInstance = runtimeService().startProcessInstanceByKey(
+        "OrderProcess",
+        "Test 1",
+        withVariables("orderTotal",
+            30.00,
+            "customerId",
+            "cust30",
+            "cardNumber",
+            "1234 5678",
+            "CVC",
+            "123",
+            "expiryDate",
+            "09/24"
+        )
+    );
+    assertThat(processInstance).isWaitingAt("Event_00ytcva");
+    ProcessInstance paymentProcess = runtimeService().createProcessInstanceQuery()
+        .processDefinitionKey("PaymentProcess")
+        .singleResult();
+    // assert that the process is waiting at start event
+    assertThat(paymentProcess).isWaitingAt("StartEvent_Payment_Required");
+    execute(job());
+    assertThat(processInstance).isEnded();
   }
 }
