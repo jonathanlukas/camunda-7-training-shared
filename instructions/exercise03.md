@@ -16,25 +16,26 @@ In this lab, we will improve the variable handling by adding service tasks and t
 
 1. In the process model, choose the 2 tasks and morph them to be service tasks. You can achieve this by clicking on each task, selecting the wrench icon in the context and then select `Service Task`.
 2. After the tasks are morphed, select each task again and define an implementation of type `Delegate expression`. Name one `${deductCredit}` and the other one `${chargeCreditCard}`.
-3. In your Java project, create a new Java class next to `CamundaApplication`. Name it `DeductCreditDelegate`:
+3. In your Java project, create a new Java class. Name it `DeductCreditDelegate`:
    ```java
-   package com.camunda.training;
+   package org.camunda.training;
 
    import com.camunda.training.services.CustomerService;
    import org.camunda.bpm.engine.delegate.DelegateExecution;
    import org.camunda.bpm.engine.delegate.JavaDelegate;
-   import org.springframework.beans.factory.annotation.Autowired;
-   import org.springframework.stereotype.Component;
    
-   @Named{deductCredit}
+   import javax.inject.Inject;
+   import javax.inject.Named;
+   
+   @Named("deductCredit")
    public class DeductCreditDelegate implements JavaDelegate {
      private final CustomerService service;
-
+   
      @Inject
      public DeductCreditDelegate(CustomerService service) {
        this.service = service;
      }
-
+   
      @Override
      public void execute(DelegateExecution execution) throws Exception {
        // extract variables from process instance
@@ -51,23 +52,24 @@ In this lab, we will improve the variable handling by adding service tasks and t
    ```
 4. Create another Java class right next to it called `ChargeCreditCardDelegate`:
    ```java
-   package com.camunda.training;
+   package org.camunda.training;
 
-   import com.camunda.training.services.CreditCardService;
    import org.camunda.bpm.engine.delegate.DelegateExecution;
    import org.camunda.bpm.engine.delegate.JavaDelegate;
-   import org.springframework.beans.factory.annotation.Autowired;
-   import org.springframework.stereotype.Component;
-
-  @Named{chargeCredit}
+   import org.camunda.training.services.CreditCardService;
+   
+   import javax.inject.Inject;
+   import javax.inject.Named;
+   
+   @Named("chargeCreditCard")
    public class ChargeCreditCardDelegate implements JavaDelegate {
      private final CreditCardService creditCardService;
-
+   
      @Inject
      public ChargeCreditCardDelegate(CreditCardService creditCardService) {
        this.creditCardService = creditCardService;
      }
-
+   
      @Override
      public void execute(DelegateExecution execution) {
        // extract variables from process instance
