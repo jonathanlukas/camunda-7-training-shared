@@ -35,10 +35,12 @@ Fill in the `username` and `password` in the server section for `camunda-bpm-nex
 #### Settings in Eclipse
 
 In Eclipse, open the Preference page and select Maven -> User Settings. Browse to your `camunda-settings.xml` and click on "Update Settings".
+
 ![Eclipse Maven User Settings](docs/eclipse-maven-user-settings.png)
 
 #### Settings in IntelliJ
 
 In IntelliJ, open the Settings dialog and select "Build, Execution, Deployment > Build Tools > Maven".
-Check the box to "Override" and browse to your `camunda-settings.xml`.  
+Check the box to "Override" and browse to your `camunda-settings.xml`.
+
 ![IntelliJ Maven User Settings](docs/intelliJ-maven-user-settings.png)

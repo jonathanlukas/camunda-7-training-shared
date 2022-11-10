@@ -13,12 +13,12 @@ The goal of this lab is to create a process model in Camunda Modeler and deploy 
   * The amount should be deducted from this credit
   * If the customer has to pay more than his credit, then the credit card of the customer should be charged.
 4. Save your work, which will save the BPMN 2.0 XML to your disk as well. If you want, take a look at it using the XML tab.
-5. Add the technical attributes in the propery panel:
+5. Add the technical attributes in the property panel:
   1. Select some space in the canvas to access the properties of the process.
-  2. Expand the general section of the property panel and change the ID of the process to PaymentProcess and enter Payment process for the Name.
+  2. Expand the general section of the property panel and change the ID of the process to `PaymentProcess` and enter `Payment process` for the Name.
   3. Select the sequence flow from the XOR gateway to the Charge credit card task. enter the section for the Condition and select Expression as Type. The expression is `#{orderTotal > customerCredit}`.
-  4. Repeat the last step for the other sequence flow leavoing the XOR gateway and set the Expression to `#{orderTotal <= customerCredit}`.
-  5. Now deploy the process model from the Modeler to the Camunda Platform 7. Press the Deloyment button  (rocket) and fill [http://localhost:8080/engine-rest](http://localhost:8080/engine-rest) as REST Endpoint.
+  4. Repeat the last step for the other sequence flow leaving the XOR gateway and set the Expression to `#{orderTotal <= customerCredit}`.
+  5. Now deploy the process model from the Modeler to the Camunda Platform 7. Press the Deployment button  (rocket) and fill [http://localhost:8080/engine-rest](http://localhost:8080/engine-rest) as REST Endpoint.
 6. Start a process instance from the Modeler. Press the Start process Instance button (play) and provide variables:
 ```
 {
