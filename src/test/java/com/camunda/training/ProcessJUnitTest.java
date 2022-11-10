@@ -150,6 +150,9 @@ public class ProcessJUnitTest {
     execute(job());
     assertThat(processInstance).isWaitingAt("Activity_Charge_Credit_Card");
     execute(job());
+    // complete the user task, let the payment fail
+    assertThat(processInstance).isWaitingAt("Activity_10uho9k");
+    complete(task(), withVariables("errorResolved", false));
     // Make assertions on the process instance
     assertThat(processInstance)
         .isEnded()
