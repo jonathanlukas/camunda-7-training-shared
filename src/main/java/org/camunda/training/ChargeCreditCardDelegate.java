@@ -21,6 +21,9 @@ public class ChargeCreditCardDelegate implements JavaDelegate {
     // extract variables from process instance
     String cardNumber = (String) execution.getVariable("cardNumber");
     String cvc = (String) execution.getVariable("CVC");
+    if (cvc.equals("789")) {
+      throw new RuntimeException("CVC invalid!");
+    }
     String expiryData = (String) execution.getVariable("expiryDate");
     Double amount = (Double) execution.getVariable("openAmount");
     // execute business logic using the variables

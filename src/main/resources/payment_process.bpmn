@@ -25,7 +25,7 @@
       <bpmn:incoming>Flow_1y2wrk9</bpmn:incoming>
       <bpmn:outgoing>Flow_0wc5vtd</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_Charge_Credit_Card" name="charge credit card" camunda:delegateExpression="${chargeCreditCard}">
+    <bpmn:serviceTask id="Activity_Charge_Credit_Card" name="charge credit card" camunda:asyncBefore="true" camunda:delegateExpression="${chargeCreditCard}">
       <bpmn:incoming>Flow_05azn3k</bpmn:incoming>
       <bpmn:outgoing>Flow_0cebkb1</bpmn:outgoing>
     </bpmn:serviceTask>
