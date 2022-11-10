@@ -41,4 +41,17 @@ public class ProcessJUnitTest {
 
   }
 
+  @Test
+  public void testCreditSufficient(){Map<String, Object> variables = new HashMap<>();
+    variables.put("openAmount", 0);
+    ProcessInstance processInstance = runtimeService()
+        .createProcessInstanceByKey("PaymentProcess")
+        .startAfterActivity("Activity_Deduct_Amount")
+        .setVariables(variables)
+        .execute();
+    assertThat(processInstance)
+        .isEnded()
+        .hasNotPassed("Activity_Charge_Credit_Card");
+  }
+
 }
