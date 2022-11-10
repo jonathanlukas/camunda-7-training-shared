@@ -26,7 +26,7 @@ You create a new process model to handle orders. The payment gets started by rec
 
 4. Create a new class `SendPaymentRequestDelegate`. It should implement the `JavaDelegate` interface.
     ```java
-   package com.camunda.training;
+   package org.camunda.training;
 
    import org.camunda.bpm.engine.delegate.DelegateExecution;
    import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -63,27 +63,32 @@ You create a new process model to handle orders. The payment gets started by rec
 6. Enter the Modeler and open the payment process. Change the start event to a Message Start Event. Open the Message section in the property panel and add a new Global message reference. Enter **paymentRequestMessage** as Name.
 7. Change the end event to a Message End Event. Fill the Implementation with type `DelegateExpression` and Delegate expression `${paymentCompletion}`.
 8. Create another delegate that sends a message back to the origin process. The correlation happens via businessKey in this implementation.
-    ```java
-    package com.camunda.training;
+   ```java
+   package org.camunda.training;
 
    import org.camunda.bpm.engine.delegate.DelegateExecution;
    import org.camunda.bpm.engine.delegate.JavaDelegate;
-   import org.springframework.stereotype.Component;
+   import org.slf4j.Logger;
+   import org.slf4j.LoggerFactory;
+   
+   import javax.inject.Named;
    
    @Named("paymentCompletion")
    public class SendPaymentCompletionDelegate implements JavaDelegate {
    
-   @Override
-   public void execute(DelegateExecution execution) throws Exception {
-   execution
-   .getProcessEngineServices()
-   .getRuntimeService()
-   .createMessageCorrelation("paymentCompletedMessage")
-   .processInstanceBusinessKey(execution.getProcessBusinessKey())
-   .correlate();
+     private static final Logger LOG = LoggerFactory.getLogger(SendPaymentRequestDelegate.class);
+   
+     @Override
+     public void execute(DelegateExecution execution) throws Exception {
+       execution
+       .getProcessEngineServices()
+       .getRuntimeService()
+       .createMessageCorrelation("paymentCompletedMessage")
+       .processInstanceBusinessKey(execution.getBusinessKey())
+       .correlate();
+     }
    }
-   }
-    ```
+   ```
 
 ### JUnit testing
 
