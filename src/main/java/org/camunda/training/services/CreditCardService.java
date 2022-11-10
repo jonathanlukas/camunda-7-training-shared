@@ -15,6 +15,7 @@ public class CreditCardService {
     if (!validateExpiryDate(expiryDate)) {
       throw new RuntimeException("Invalid expiry date: " + expiryDate + "\nExpiry date must be in the future.");
     }
+
     LOG.info("charging card {} that expires on {} and has cvc {} with amount of {}",
         cardNumber, expiryDate, cvc, amount);
 

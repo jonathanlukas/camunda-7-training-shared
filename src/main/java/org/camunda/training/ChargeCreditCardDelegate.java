@@ -1,5 +1,6 @@
 package org.camunda.training;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.training.services.CreditCardService;
@@ -27,6 +28,10 @@ public class ChargeCreditCardDelegate implements JavaDelegate {
     String expiryData = (String) execution.getVariable("expiryDate");
     Double amount = (Double) execution.getVariable("openAmount");
     // execute business logic using the variables
-    creditCardService.chargeAmount(cardNumber, cvc, expiryData, amount);
+    try {
+      creditCardService.chargeAmount(cardNumber, cvc, expiryData, amount);
+    } catch (Exception exc) {
+      throw new BpmnError("chargingError", "We failed to charge credit card with card number " + cardNumber, exc);
+    }
   }
 }

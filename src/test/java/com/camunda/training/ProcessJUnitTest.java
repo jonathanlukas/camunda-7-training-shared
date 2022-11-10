@@ -134,4 +134,25 @@ public class ProcessJUnitTest {
     execute(job());
     assertThat(processInstance).isEnded();
   }
+
+  @Test
+  public void testInvalidExpiryDate() {
+    Mocks.register("paymentCompletion", (JavaDelegate)execution -> {});
+    Map<String, Object> variables = new HashMap<String, Object>();
+    variables.put("orderTotal", 30.00);
+    variables.put("customerId", "cust20");
+    variables.put("cardNumber", "1234 5678");
+    variables.put("CVC","123");
+    variables.put("expiryDate","09/241");
+    // Start process with Java API and variables
+    ProcessInstance processInstance = runtimeService().startProcessInstanceByKey("PaymentProcess", variables);
+    assertThat(processInstance).isWaitingAt("StartEvent_Payment_Required");
+    execute(job());
+    assertThat(processInstance).isWaitingAt("Activity_Charge_Credit_Card");
+    execute(job());
+    // Make assertions on the process instance
+    assertThat(processInstance).isEnded().hasPassed("Activity_Charge_Credit_Card")
+        .hasNotPassed("Event_Payment_Complete")
+        .hasPassed("Event_0jzgwfr");
+  }
 }

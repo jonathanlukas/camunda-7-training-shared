@@ -17,7 +17,7 @@
       <bpmn:outgoing>Flow_0k5japq</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0cebkb1" sourceRef="Activity_Charge_Credit_Card" targetRef="Gateway_0em6c8p" />
-    <bpmn:sequenceFlow id="Flow_0k5japq" sourceRef="Gateway_0em6c8p" targetRef="Event_1r5py5e" />
+    <bpmn:sequenceFlow id="Flow_0k5japq" sourceRef="Gateway_0em6c8p" targetRef="Event_Payment_Complete" />
     <bpmn:sequenceFlow id="Flow_0lakat0" name="no" sourceRef="Gateway_0yo81ri" targetRef="Gateway_0em6c8p">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{openAmount == 0}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -33,12 +33,22 @@
       <bpmn:outgoing>Flow_1y2wrk9</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1e136rs" messageRef="Message_12i0hrk" />
     </bpmn:startEvent>
-    <bpmn:endEvent id="Event_1r5py5e" name="payment&#10;complete">
+    <bpmn:endEvent id="Event_Payment_Complete" name="payment&#10;complete">
       <bpmn:incoming>Flow_0k5japq</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0neijde" camunda:delegateExpression="${paymentCompletion}" />
     </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_1dr4b8a" name="Charging failed" attachedToRef="Activity_Charge_Credit_Card">
+      <bpmn:outgoing>Flow_0dvp9jr</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0tj6vyr" errorRef="Error_10vzdsj" camunda:errorCodeVariable="errorCode" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_0dvp9jr" sourceRef="Event_1dr4b8a" targetRef="Event_0jzgwfr" />
+    <bpmn:endEvent id="Event_0jzgwfr" name="payment&#10;failed">
+      <bpmn:incoming>Flow_0dvp9jr</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1rl4bke" camunda:delegateExpression="${paymentCompletion}" />
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:message id="Message_12i0hrk" name="paymentRequestMessage" />
+  <bpmn:error id="Error_10vzdsj" name="chargingError" errorCode="chargingError" camunda:errorMessage="errorMessage" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="PaymentProcess">
       <bpmndi:BPMNShape id="Gateway_0yo81ri_di" bpmnElement="Gateway_0yo81ri" isMarkerVisible="true">
@@ -63,10 +73,22 @@
           <dc:Bounds x="155" y="225" width="51" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0k2f0z8_di" bpmnElement="Event_1r5py5e">
+      <bpmndi:BPMNShape id="Event_0k2f0z8_di" bpmnElement="Event_Payment_Complete">
         <dc:Bounds x="772" y="182" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="768" y="225" width="45" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1cr3uln_di" bpmnElement="Event_0jzgwfr">
+        <dc:Bounds x="772" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="768" y="355" width="44" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1v9sfh8_di" bpmnElement="Event_1dr4b8a">
+        <dc:Bounds x="542" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="523" y="265" width="75" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1y2wrk9_di" bpmnElement="Flow_1y2wrk9">
@@ -100,6 +122,11 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="554" y="122" width="13" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dvp9jr_di" bpmnElement="Flow_0dvp9jr">
+        <di:waypoint x="560" y="258" />
+        <di:waypoint x="560" y="330" />
+        <di:waypoint x="772" y="330" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
