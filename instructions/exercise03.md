@@ -52,11 +52,11 @@ In this lab, we will improve the variable handling by adding service tasks and t
    ```
 4. Create another Java class right next to it called `ChargeCreditCardDelegate`:
    ```java
-   package org.camunda.training;
+   package com.camunda.training;
 
    import org.camunda.bpm.engine.delegate.DelegateExecution;
    import org.camunda.bpm.engine.delegate.JavaDelegate;
-   import org.camunda.training.services.CreditCardService;
+   import com.camunda.training.services.CreditCardService;
    
    import javax.inject.Inject;
    import javax.inject.Named;
